@@ -1,24 +1,13 @@
 const express = require('express');
 const { graphqlHTTP } = require('express-graphql');
-const { buildSchema } = require('graphql');
-
-const schema = buildSchema(`
-  type Query {
-    hello: String
-  }
-`);
-
-const root = {
-  hello: () => {
-    return 'Hello world!';
-  },
-};
+const schema = require('./schema');
+const resolvers = require('./resolvers');
 
 const app = express();
-app.use('/graphql', graphqlHTTP({
+app.use('/checkout', graphqlHTTP({
   schema: schema,
-  rootValue: root,
+  rootValue: resolvers,
   graphiql: true,
 }));
 app.listen(4000);
-console.log('Running a GraphQL API server at http://localhost:4000/graphql');
+console.log('Running a Checkout GraphQL API server at http://localhost:4000/checkout');
