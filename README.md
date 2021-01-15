@@ -23,9 +23,9 @@ Open http://localhost:4000/ on browser, it will show a GraphiQL UI to query
 ### Example Input:
 
 To list all inventories:
-```json
+```
 {
-    inventories {
+  inventories {
         sku
         name
         price
@@ -34,7 +34,7 @@ To list all inventories:
 ```
 
 To see total price:
-```json
+```
 {
     totalPrice(sku: ["A304SD", "A304SD", "A304SD"])
 }
