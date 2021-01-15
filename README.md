@@ -18,7 +18,7 @@ $ cd checkout
 $ npm install
 $ node server
 ```
-Open http://localhost:4000/ on browser, it will show a GraphiQL UI to query
+Open http://localhost:4000/checkout on browser, it will show a GraphiQL UI to query
 
 ### Example Input:
 
