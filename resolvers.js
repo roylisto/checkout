@@ -20,6 +20,7 @@ resolvers.totalPrice = (args) => {
   let sumPrice = 0;
   promotion.calculateBundleItems(checkoutItems);
   promotion.calculateFreeItems(checkoutItems);
+  promotion.calculateDiscountItems(checkoutItems);
   checkoutItems.forEach((item) => {
     item.counted = true;
     sumPrice += item.price;

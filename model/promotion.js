@@ -51,20 +51,50 @@ const calculateFreeItems = (checkoutItems) => {
   checkoutItems.forEach((item) => {
     const freeItem = free.find((f) => f.sku === item.sku);
     if (freeItem) {
-      item.counted = true;
       freeItems.push(item);
-      const tmpFreeItem = freeItems.filter((i) => i.sku === item.sku);
+      const tmpFreeItem = freeItems.filter((i) => i.sku === item.sku && i.counted === false);
       if (tmpFreeItem.length % freeItem.minQty === 0) {
         for (let i=0; i < freeItem.free; i++) {
           tmpFreeItem[i].price = 0;
         }
+        tmpFreeItem.forEach((t) => {
+          t.counted = true;
+        });
       }
     }
   });
-  Object.assign(checkoutItems, freeItems);
+}
+
+const discount = [
+  {
+    sku: 'A304SD',
+    minQty: 3,
+    discount: 0.1,
+  },
+];
+
+const calculateDiscountItems = (checkoutItems) => {
+  let discountItems = [];
+  checkoutItems = checkoutItems.filter((item) => item.counted === false);
+  checkoutItems.forEach((item) => {
+    const discountItem = discount.find((f) => f.sku === item.sku);
+    if (discountItem) {
+      discountItems.push(item);
+      const tmpDiscountItem = discountItems.filter((i) => i.sku === item.sku && i.counted === false);
+      if (tmpDiscountItem.length % discountItem.minQty === 0) {
+        for (let i=0; i < tmpDiscountItem.length; i++) {
+          tmpDiscountItem[i].price = tmpDiscountItem[i].price - (tmpDiscountItem[i].price * discountItem.discount);
+        }
+        tmpDiscountItem.forEach((t) => {
+          t.counted = true;
+        });
+      }
+    }
+  });
 }
 
 module.exports = {
   calculateBundleItems,
   calculateFreeItems,
+  calculateDiscountItems,
 };
