@@ -28,16 +28,43 @@ const calculateBundleItems = (checkoutItems) => {
         if (qty && !checkoutItem.counted) {
           if (checkoutItem.sku === relatedItem.sku) {
             checkoutItem.counted = true;
-            checkoutItem.price = 0; // set 0 for related item in bundle
+            checkoutItem.price = 0;
             qty--;
           }
         }
       })
     });
   });
-  console.log(checkoutItems);
+};
+
+const free = [
+  {
+    sku: '120P90',
+    minQty: 3,
+    free: 1,
+  },
+];
+
+const calculateFreeItems = (checkoutItems) => {
+  let freeItems = [];
+  checkoutItems = checkoutItems.filter((item) => item.counted === false);
+  checkoutItems.forEach((item) => {
+    const freeItem = free.find((f) => f.sku === item.sku);
+    if (freeItem) {
+      item.counted = true;
+      freeItems.push(item);
+      const tmpFreeItem = freeItems.filter((i) => i.sku === item.sku);
+      if (tmpFreeItem.length % freeItem.minQty === 0) {
+        for (let i=0; i < freeItem.free; i++) {
+          tmpFreeItem[i].price = 0;
+        }
+      }
+    }
+  });
+  Object.assign(checkoutItems, freeItems);
 }
 
 module.exports = {
   calculateBundleItems,
+  calculateFreeItems,
 };

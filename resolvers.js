@@ -19,7 +19,9 @@ resolvers.totalPrice = (args) => {
 
   let sumPrice = 0;
   promotion.calculateBundleItems(checkoutItems);
+  promotion.calculateFreeItems(checkoutItems);
   checkoutItems.forEach((item) => {
+    item.counted = true;
     sumPrice += item.price;
   });
   return parseFloat(sumPrice).toFixed(2);
