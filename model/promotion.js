@@ -23,14 +23,16 @@ const calculateBundleItems = (checkoutItems) => {
   });
   bundleItems.forEach((item) => {
     item.relatedItems.forEach((relatedItem) => {
-      for (let i=0; i < relatedItem.qty; i++) {
-        checkoutItems.forEach((checkoutItem) => {
+      let qty = relatedItem.qty;
+      checkoutItems.forEach((checkoutItem) => {
+        if (qty && !checkoutItem.counted) {
           if (checkoutItem.sku === relatedItem.sku) {
             checkoutItem.counted = true;
             checkoutItem.price = 0; // set 0 for related item in bundle
+            qty--;
           }
-        })
-      }
+        }
+      })
     });
   });
   console.log(checkoutItems);

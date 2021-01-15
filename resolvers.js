@@ -7,10 +7,15 @@ let resolvers = {
 
 resolvers.totalPrice = (args) => {
   const {sku} = args;
-  const checkoutItems = inventory.filter((i) => {
-    i.counted = false;
-    return sku.indexOf(i.sku) > -1;
-  });
+
+  let checkoutItems = [];
+  sku.forEach((s) => {
+    const item = inventory.find((i) => {
+      i.counted = false;
+      return s === i.sku;
+    });
+    checkoutItems.push(JSON.parse(JSON.stringify(item)));
+  })
 
   let sumPrice = 0;
   promotion.calculateBundleItems(checkoutItems);
